@@ -1,0 +1,53 @@
+const int TrigPin = A2;
+const int EchoPin = A3;
+const int RedPin=4;
+
+float cm;
+int a = 70;
+void setup()
+{
+
+Serial.begin(9600);
+pinMode(TrigPin, OUTPUT);
+pinMode(EchoPin, INPUT);
+pinMode(7,OUTPUT);
+pinMode(10,OUTPUT);
+pinMode(RedPin,OUTPUT);
+  Serial.begin(115200);
+  pinMode(10,OUTPUT);
+}
+void loop()
+{
+
+ int n =analogRead(A4);
+    Serial.println(n);
+    delay(1000);
+if(n<=a)
+digitalWrite(10,HIGH);
+else
+digitalWrite(10,LOW);
+delay(100);
+
+digitalWrite(7, LOW);
+ 
+digitalWrite(TrigPin, LOW); //低高低电平发一个短时间脉冲去TrigPin
+delayMicroseconds(2);
+digitalWrite(TrigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(TrigPin, LOW);
+ 
+cm = pulseIn(EchoPin, HIGH) / 58.0; //将回波时间换算成cm
+cm = (int(cm * 100.0)) / 100.0; //保留两位小数
+if (cm>=2 && cm<=20)
+digitalWrite(7, HIGH);
+
+if(cm<=60)
+{
+digitalWrite(RedPin,HIGH);
+delay(500);
+}
+Serial.print(cm);
+Serial.println();
+delay(1000);
+
+} 
